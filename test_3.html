@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test_4</title>
+</head>
+<body>
+    <header>
+        <h4>Игра: "Угадай число"</h4>
+    </header>
+    <p>Мы загадали число от 1 до 100, попробуй угадать. Удачи!</p>
+    <div class="form">
+        <input id="userNumber" class="userNumber" type="text" placeholder="Введите число">
+        <button type="submit" value="Submit guess" class="guessSubmit">Проверить</button>
+    </div>
+    <div class="resultParas">
+        <p class="guesses"></p>
+        <p class="lastResult"></p>
+        <p class="lowOrHi"></p>
+    </div>
+   
+    <script type="text/javascript">
+        var randomNumber = Math.floor(Math.random()*100) + 1;
+        console.log (randomNumber);
+        var guesses = document.querySelector('.guesses');
+        var lastResult = document.querySelector('.lastResult');
+        var lowOrHi = document.querySelector('.lowOrHi');
+        var btn = document.querySelector('.guessSubmit');
+        var userNumber = document.querySelector ('.userNumber');
+        var guessCount = 1;
+        var resetButton;
+        userNumber.focus();
+
+        function checkGuess() {
+            var userGuess = Number (userNumber.value);
+            if (userGuess === randomNumber) {
+                lastResult.textContent = 'You found the number!' + ' ' + 'Количество попыток:' + ' ' + guessCount;
+                lowOrHi.textContent = '';
+                setGameOver();
+            } else {
+                    if(userGuess < randomNumber) {
+                    lowOrHi.textContent = 'Too Low!';
+                    } else if(userGuess > randomNumber) {
+                    lowOrHi.textContent = 'Too high!';
+                    }
+                }
+            guessCount++;
+            userNumber.value = '';
+            userNumber.focus();
+        }
+        btn.addEventListener('click', checkGuess);
+        function setGameOver() {
+            userNumber.disabled = true;
+            btn.disabled = true;
+            resetButton = document.createElement('button');
+            resetButton.textContent = 'Start new game';
+            document.body.appendChild(resetButton);
+            resetButton.addEventListener('click', resetGame);
+        }
+        function resetGame() {
+            guessCount = 1;
+
+            var resetParas = document.querySelectorAll('.resultParas p');
+            for (var i = 0 ; i < resetParas.length ; i++) {
+                resetParas[i].textContent = '';
+            }
+
+            resetButton.parentNode.removeChild(resetButton);
+            randomNumber = Math.floor(Math.random() * 100) + 1;
+            console.log (randomNumber);
+            userNumber.disabled = false;
+            btn.disabled = false;
+            userNumber.value = '';
+            userNumber.focus();
+        }
+
+    </script>
+</body>
+</html>
